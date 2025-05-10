@@ -1,0 +1,80 @@
+global:
+  scrape_interval: 60s
+  evaluation_interval: 60s
+  scrape_timeout: 60s
+
+scrape_configs:
+  - job_name: 'snmp_interfaces'
+    metrics_path: /snmp
+    static_configs:
+     - targets:
+        - 192.168.178.10
+    params:
+      module: [cisco_interfaces]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp_exporter:9116
+
+  - job_name: 'snmp_cpu'
+    metrics_path: /snmp
+    static_configs:
+      - targets:
+        - 192.168.178.10
+    params:
+      module: [cisco_cpu]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp_exporter:9116
+
+  - job_name: 'snmp_memory'
+    metrics_path: /snmp
+    static_configs:
+      - targets:
+        - 192.168.178.10
+    params:
+      module: [cisco_memory]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp_exporter:9116
+
+  - job_name: 'snmp_storage'
+    metrics_path: /snmp
+    static_configs:
+      - targets:
+        - 192.168.178.10
+    params:
+      module: [cisco_storage]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp_exporter:9116
+
+  - job_name: 'snmp_temperature'
+    metrics_path: /snmp
+    static_configs:
+      - targets:
+        - 192.168.178.10
+    params:
+      module: [cisco_temperature]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp_exporter:9116
