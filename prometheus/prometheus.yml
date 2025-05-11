@@ -78,3 +78,33 @@ scrape_configs:
         target_label: instance
       - target_label: __address__
         replacement: snmp_exporter:9116
+
+  - job_name: 'snmp_system'
+    metrics_path: /snmp
+    static_configs:
+      - targets:
+        - 192.168.178.10
+    params:
+      module: [cisco_system]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp_exporter:9116
+  
+  - job_name: 'snmp_if_mib'
+    metrics_path: /snmp
+    static_configs:
+      - targets:
+        - 192.168.178.10  
+    params:
+      module: [if_mib]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp_exporter:9116
