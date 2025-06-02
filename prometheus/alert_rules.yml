@@ -1,0 +1,73 @@
+groups:
+  - name: snmp_alerts
+    rules:
+
+      # 🔥 ALERT: CPU sử dụng cao
+#      - alert: High_CPU_Usage
+#        expr: cisco_cpu_5min > 5
+#        for: 30s
+#        labels:
+#          severity: critical
+#        annotations:
+#          summary: "CPU sử dụng cao trên {{ $labels.instance }}"
+#          description: "Sử dụng CPU trên 80% trong 30 giây"
+
+      # 🔥 ALERT: RAM sử dụng cao
+#      - alert: High_Memory_Usage
+#        expr: (cisco_memory_used / (cisco_memory_used + cisco_memory_free)) * 100 > 5
+#        for: 30s
+#        labels:
+#          severity: critical
+#        annotations:
+#          summary: "RAM sử dụng cao trên {{ $labels.instance }}"
+#          description: "Sử dụng RAM vượt quá 85% trong 30 giây"
+
+      # 🔥 ALERT: Dung lượng lưu trữ gần đầy
+#      - alert: High_Disk_Usage
+#        expr: (hrStorageUsed / hrStorageSize) * 100 > 5
+#        for: 30s
+#        labels:
+#          severity: warning
+#        annotations:
+#          summary: "Dung lượng lưu trữ gần đầy trên {{ $labels.instance }}"
+#          description: "Sử dụng Dung lượng lưu trữ trên 90% trong 30 giây"
+
+      # 🔥 ALERT: Nhiệt độ cao
+#      - alert: High_Temperature
+#        expr: cisco_temperature > 20
+#        for: 30s
+#        labels:
+#          severity: critical
+#        annotations:
+#          summary: "Nhiệt độ cao trên {{ $labels.instance }}"
+#          description: "Cảm biến nhiệt độ đo được trên 70°C."
+
+      # 🔥 ALERT: Port bị tắt
+#      - alert: Interface_Down
+#        expr: ifOperStatus == 2
+#        for: 10s
+#        labels:
+#          severity: warning
+#        annotations:
+#          summary: "Interface {{ $labels.ifDescr }} is down"
+#          description: "Interface {{ $labels.ifDescr }} on {{ $labels.instance }} is down."
+
+      # 🔥 ALERT: Router bị mất kết nối (down)
+      - alert: RouterDown
+        expr: up{job="snmp_interfaces", instance="192.168.178.10"} == 0
+        for: 10s # Cảnh báo nếu router down trong 1 phút liên tục
+        labels:
+          severity: critical
+        annotations:
+          summary: "Router {{ $labels.instance }} is DOWN!"
+          description: "Router {{ $labels.instance }} (SNMP Job: {{ $labels.job }}) đã không thể truy cập được trong hơn 1 phút. Kiểm tra nguồn điện và kết nối mạng."
+
+      # 🔥 ALERT: Router đã kết nối lại (up)
+#      - alert: RouterUp
+#        expr: up{job="snmp_interfaces", instance="192.168.178.10"} == 1
+#        for: 10s # Cảnh báo nếu router UP trở lại sau khi down
+#        labels:
+#          severity: info
+#        annotations:
+#          summary: "Router {{ $labels.instance }} is UP again!"
+#          description: "Router {{ $labels.instance }} (SNMP Job: {{ $labels.job }}) đã kết nối lại."
